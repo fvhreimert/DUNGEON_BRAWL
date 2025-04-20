@@ -19,6 +19,24 @@ import { setupTreasureMapModalListeners } from './modals/treasureMapModal.js';
 import { setupCategorySelectModalListeners } from './modals/categorySelectModal.js';
 import { setupConfirmModalListeners } from './modals/confirmModal.js';
 
+// --- Helper function to disable context menu ---
+function disableImageContextMenu(selector) {
+    const elements = document.querySelectorAll(selector);
+    if (!elements || elements.length === 0) {
+        console.warn(`disableImageContextMenu: No elements found for selector "${selector}"`);
+        return;
+    }
+    console.log(`Disabling context menu for ${elements.length} elements matching "${selector}"`);
+    elements.forEach(element => {
+        element.addEventListener('contextmenu', (event) => {
+            console.log(`Context menu prevented on:`, element); // Optional debug log
+            event.preventDefault(); // Prevent the default right-click menu
+        });
+        // Optional: Prevent dragging images (can sometimes trigger overlays)
+        element.setAttribute('draggable', 'false');
+    });
+}
+
 // --- Game Initialization Function ---
 function initializeGame() {
     console.log("Initializing game...");
@@ -94,8 +112,12 @@ function addCoreGameEventListeners() {
     if (DOM.sacrificialGobletImg) DOM.sacrificialGobletImg.addEventListener('click', handleSacrificialGoblet);
     else console.warn("Listener not added: Sacrificial Goblet Img not found");
 
+    // Disable context menu for side icons
+    disableImageContextMenu('.side-icon .icon-group img');
+
     // Note: Chest click listeners are added in board.js when chests are created.
     // Note: Player card click listeners (for turn change/score) are added in player.js.
+    console.log("CORE game event listeners added.");
 }
 
 
@@ -108,3 +130,4 @@ document.addEventListener('DOMContentLoaded', () => {
     startSetup(initializeGame);
 
 });
+

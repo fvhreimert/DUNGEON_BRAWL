@@ -93,6 +93,14 @@ export function createBoard() {
                 chestWrapper.appendChild(pointsSpan);
 
                 chestWrapper.addEventListener('click', handleChestClick);
+
+                // Attach contextmenu listener to the wrapper
+                chestWrapper.addEventListener('contextmenu', (event) => {
+                    event.preventDefault(); // Prevent right-click menu
+                });
+                // Prevent dragging
+                chestWrapper.setAttribute('draggable', 'false');
+
                 column.appendChild(chestWrapper);
             });
         }
