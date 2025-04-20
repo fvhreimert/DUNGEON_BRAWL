@@ -125,7 +125,17 @@ export const allQuizzes = {
                     { q: "Hvad hedder det rumteleskop, som blev opsendt i 2021 som afløser for Hubble?", a: "James Webb Space Telescope" },
                     { q: "Hvilken europæisk mission fra 2004 var den første til at lande et fartøj på en kometkerne?", a: "Rosetta‑missionen (lander Philae)" }
                 ]
-            }
+            },
+            {
+                name: "TRAVEL & PLACES",
+                questions: [
+                    { q: "Hvilken europæisk by er kendt for sine kanaler og gondoler?", a: "Venedig" },
+                    { q: "Hvad er verdens største ø, der ikke er et kontinent?", a: "Grønland" },
+                    { q: "Hvilket vandfald ligger på grænsen mellem Canada og USA?", a: "Niagara Falls" },
+                    { q: "I hvilket land finder man den antikke klippeby Petra?", a: "Jordan" },
+                    { q: "Hvilken by huser verdens højeste bygning Burj Khalifa?", a: "Dubai" }
+                ]
+            },
         ]
     },
 
