@@ -1,0 +1,279 @@
+/* --- Basic Reset & Font --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #3a3a3a;
+    /* background-image: url('images/dungeon_brick.png'); Optional */
+    background-size: 350px auto;
+    background-repeat: repeat;
+    color: #e0e0e0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #c8b084;
+    text-shadow: 2px 2px #1a140d;
+    margin-bottom: 5px;
+    font-size: 1.8rem;
+    text-align: center;
+}
+p:not(.card-description) { /* Target body paragraph, not card description */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 0.8rem;
+    color: #b8a074;
+}
+
+
+/* --- Card Display Area --- */
+.card-display-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* Space between cards */
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* --- Base Card Structure --- */
+.card {
+    width: 280px; /* Fixed width for the card */
+    /* Default to Common theme appearance */
+    background-color: #a0a0a0; /* Light grey base */
+    border: 4px solid #404040; /* Dark grey border */
+    box-shadow: 3px 3px 0px 0px #404040, /* Pixel shadow effect */
+                inset 0 0 0 2px #c0c0c0; /* Inner highlight border */
+    padding: 5px; /* Padding between outer border and inner content */
+    display: flex;
+    flex-direction: column;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    transition: transform 0.2s ease-out;
+    position: relative; /* Crucial for the ::before overlay */
+    z-index: 1;
+    overflow: hidden; /* Keep shiny effect contained */
+}
+
+/* --- Hover Effect --- */
+.card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+
+
+/* --- Card Image Area (Common to all) --- */
+.card-image-area {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #2d241d;
+    border: 3px solid #777777;
+    margin-bottom: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+    position: relative; /* Ensure image is below potential overlays */
+    z-index: 2;
+}
+
+/* --- Image Styling --- */
+.card-image-area img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* --- Base Card Content Area --- */
+.card-content {
+    background-color: #888888;
+    border: 2px solid #404040;
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    position: relative; /* Ensure content is below potential overlays */
+    z-index: 2;
+}
+
+/* --- Base Card Title --- */
+.card-title {
+    font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 1px 1px #333333;
+    text-align: center;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #404040;
+    word-break: break-word;
+}
+
+/* --- Base Card Description --- */
+.card-description {
+    font-size: 0.7rem;
+    color: #333333;
+    line-height: 1.5;
+    text-align: left;
+    margin-bottom: 15px;
+    flex-grow: 1;
+    min-height: 40px;
+}
+
+/* --- Base Card Type Banner --- */
+.card-type-banner {
+    background-color: #555555;
+    border: 2px solid #222222;
+    padding: 4px 8px;
+    margin-top: auto;
+    text-align: center;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.4);
+}
+
+/* --- Base Card Type Text --- */
+.card-type {
+    font-size: 0.75rem;
+    color: #ffffff;
+    text-shadow: 1px 1px #111111;
+    font-weight: bold;
+}
+
+/* --- THEME OVERRIDES --- */
+
+/* --- 1. Negative Theme (Red) --- */
+.card.negative { background-color: #6e2f2f; border-color: #3b1414; box-shadow: 3px 3px 0px 0px #3b1414, inset 0 0 0 2px #8e4f4f; }
+.card.negative .card-image-area { border-color: #8e4f4f; }
+.card.negative .card-content { background-color: #5e1f1f; border-color: #3b1414; }
+.card.negative .card-title { color: #ff6b6b; text-shadow: 1px 1px #3b1414; border-bottom-color: #3b1414; }
+.card.negative .card-description { color: #f0d0d0; }
+.card.negative .card-type-banner { background-color: #4d0f0f; border-color: #2b0404; }
+.card.negative .card-type { color: #ffcccc; text-shadow: 1px 1px #2b0404; }
+
+/* --- 2. Common Theme (Grey) - Uses Defaults --- */
+
+/* --- 3. Rare Theme (Blue) --- */
+.card.rare { background-color: #3a5a7a; border-color: #1d3a5a; box-shadow: 3px 3px 0px 0px #1d3a5a, inset 0 0 0 2px #5a7a9a; }
+.card.rare .card-image-area { border-color: #5a7a9a; }
+.card.rare .card-content { background-color: #2a4a6a; border-color: #1d3a5a; }
+.card.rare .card-title { color: #a0d8ff; text-shadow: 1px 1px #1d3a5a; border-bottom-color: #1d3a5a; }
+.card.rare .card-description { color: #d0e8ff; }
+.card.rare .card-type-banner { background-color: #1a2d4a; border-color: #0d1d3a; }
+.card.rare .card-type { color: #c0e0ff; text-shadow: 1px 1px #0d1d3a; }
+
+/* --- 4. Epic Theme (Purple) --- */
+.card.epic { background-color: #5a3a7a; border-color: #3a1d5a; box-shadow: 3px 3px 0px 0px #3a1d5a, inset 0 0 0 2px #7a5a9a; }
+.card.epic .card-image-area { border-color: #7a5a9a; }
+.card.epic .card-content { background-color: #4a2a6a; border-color: #3a1d5a; }
+.card.epic .card-title { color: #e8a0ff; text-shadow: 1px 1px #3a1d5a; border-bottom-color: #3a1d5a; }
+.card.epic .card-description { color: #e8d0ff; }
+.card.epic .card-type-banner { background-color: #2d1a4a; border-color: #1d0a3a; }
+.card.epic .card-type { color: #d8c0ff; text-shadow: 1px 1px #1d0a3a; }
+
+/* --- 5. Legendary Theme (Golden) --- */
+.card.legendary { background-color: #b8860b; border-color: #5a3a00; box-shadow: 3px 3px 0px 0px #5a3a00, inset 0 0 0 2px #daa520; }
+.card.legendary .card-image-area { border-color: #daa520; }
+.card.legendary .card-content { background-color: #8b4513; border-color: #5a3a00; }
+.card.legendary .card-title { color: #ffd700; text-shadow: 1px 1px #5a3a00; border-bottom-color: #5a3a00; }
+.card.legendary .card-description { color: #f5f5dc; }
+.card.legendary .card-type-banner { background-color: #6a2a00; border-color: #401a00; }
+.card.legendary .card-type { color: #ffec8b; text-shadow: 1px 1px #401a00; }
+
+/* --- NEW: 5.5 Instant Theme (Teal/Cyan) --- */
+/* Based on Epic, but with teal/cyan colors */
+.card.instant { background-color: #008080; border-color: #004d4d; box-shadow: 3px 3px 0px 0px #004d4d, inset 0 0 0 2px #40e0d0; }
+.card.instant .card-image-area { border-color: #40e0d0; }
+.card.instant .card-content { background-color: #006666; border-color: #004d4d; }
+.card.instant .card-title { color: #afeeee; text-shadow: 1px 1px #003333; border-bottom-color: #004d4d; }
+.card.instant .card-description { color: #e0ffff; }
+.card.instant .card-type-banner { background-color: #004d4d; border-color: #003333; }
+.card.instant .card-type { color: #b0ffff; text-shadow: 1px 1px #003333; }
+
+/* --- 6. Dark Theme (Black/Red Font) --- */
+.card.dark { background-color: #222222; border-color: #0a0a0a; box-shadow: 3px 3px 0px 0px #0a0a0a, inset 0 0 0 2px #444444; }
+.card.dark .card-image-area { border-color: #444444; }
+.card.dark .card-content { background-color: #333333; border-color: #0a0a0a; }
+.card.dark .card-title { color: #ff4444; text-shadow: 1px 1px #000000; border-bottom-color: #0a0a0a; }
+.card.dark .card-description { color: #aaaaaa; }
+.card.dark .card-type-banner { background-color: #1a1a1a; border-color: #000000; }
+.card.dark .card-type { color: #ff5555; text-shadow: 1px 1px #000000; }
+
+/* --- ✨ SHINY EFFECT ✨ --- */
+
+@keyframes shiny-sweep {
+  0% { background-position: -200% 0; } /* Start off-screen left */
+  100% { background-position: 200% 0; } /* End off-screen right */
+}
+
+.card.shiny::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3; /* Place overlay above content (image, text area) */
+
+    /* The rainbow gradient */
+    background: linear-gradient(
+        110deg, /* Angle of the sweep */
+        rgba(255, 255, 255, 0) 20%, /* Start transparent */
+        rgba(255, 0, 0, 0.3) 30%, /* Red hint */
+        rgba(255, 165, 0, 0.3) 35%, /* Orange hint */
+        rgba(255, 255, 0, 0.3) 40%, /* Yellow hint */
+        rgba(0, 128, 0, 0.3) 45%,  /* Green hint */
+        rgba(0, 0, 255, 0.3) 50%,   /* Blue hint */
+        rgba(75, 0, 130, 0.3) 55%, /* Indigo hint */
+        rgba(238, 130, 238, 0.3) 60%,/* Violet hint */
+        rgba(255, 255, 255, 0) 70% /* End transparent */
+    );
+
+    background-size: 250% 100%; /* Make gradient wider than the card */
+
+    /* Interaction mode - Try 'color-dodge', 'overlay', 'soft-light' */
+    mix-blend-mode: color-dodge;
+    opacity: 0.6; /* Adjust intensity (0 to 1) */
+
+    /* Apply the animation */
+    animation: shiny-sweep 4s linear infinite; /* 4s duration, constant speed, loops forever */
+
+    pointer-events: none; /* Make sure overlay doesn't block clicks/hovers on card */
+    border-radius: 0; /* Match the card's shape (can be adjusted if needed) */
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 900px) {
+   .card-display-area { max-width: 600px;} /* Allow 2 cards per row */
+}
+
+@media (max-width: 600px) {
+    h1 { font-size: 1.5rem; }
+    .card { width: 80%; max-width: 280px; }
+    .card-display-area { gap: 20px; max-width: 320px; } /* Stack cards */
+}
+
+@media (max-width: 400px) {
+     h1 { font-size: 1.2rem; }
+     .card { width: 95%; }
+     .card-title { font-size: 0.9rem; }
+     .card-description { font-size: 0.65rem; }
+     .card-type { font-size: 0.7rem;}
+}

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Jeopardy!</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="setup-active">
+
+    <!-- Player Setup Modal -->
+    <div id="setup-modal" class="modal setup-modal">
+        <div class="modal-content setup-content">
+            <h2>Game Setup</h2> <!-- Changed title slightly -->
+
+            <!-- <<< NEW Quiz Selection Step >>> -->
+            <div id="quiz-selection-step">
+                <h3>Select Quiz Pack</h3>
+                <div id="quiz-list" class="quiz-list-container">
+                    <!-- Quiz buttons/items will be added here by JavaScript -->
+                    <p>Loading quizzes...</p>
+                </div>
+                <p id="quiz-select-error" class="error-message" style="display: none;"></p>
+            </div>
+            <!-- <<< End Quiz Selection Step >>> -->
+
+            <div id="player-count-step" style="display: none;"> <!-- Start hidden -->
+                <label for="player-count">How many players/teams?</label>
+                <input type="number" id="player-count" name="player-count" min="1" max="6" value="2">
+                <button id="submit-player-count">Set Names</button>
+            </div>
+            <div id="player-names-step" style="display: none;">
+                <p>Enter Player/Team Names:</p>
+                <div id="player-name-inputs"></div>
+                <p id="setup-error" class="error-message" style="display: none;"></p> <!-- Re-use existing error field? -->
+                <button id="start-game-btn">Start Game!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wrapper for Game Area and Side Icons -->
+    <div class="game-environment">
+
+        <!-- Left Side Icons -->
+        <div class="side-icon left-icon">
+            <!-- Icon Group 1: Card Jester -->
+            <div class="icon-group">
+                <img src="images/card_jester.png" alt="Card Jester" id="card-jester-img"> <!-- REMOVED title="Card Jester" -->
+                <span>Card Jester</span>
+                <span class="icon-price-tag">75 Pts</span>
+            </div>
+
+            <!-- Icon Group 2: Mad Seer -->
+            <div class="icon-group" id="mad-seer-icon-group">
+                <img src="images/mad_seer.png" alt="Mad Seer" id="mad-seer-img"> <!-- REMOVED title="Mad Seer" -->
+                <span>Mad Seer</span>
+                <span class="icon-price-tag">50 Pts</span>
+            </div>
+        </div>
+
+        <!-- Main Game Area -->
+        <div class="main-game-area">
+            <!-- TORCHES REMOVED -->
+            <div class="game-container">
+                <header class="game-title">
+                    <h1>DUNGEON BRAWL</h1>
+                </header>
+                <div class="game-board">
+                    <div class="categories"></div>
+                    <div class="questions-grid"></div>
+                </div>
+            </div>
+            <div id="player-info-area">
+                <div id="player-cards-container"></div>
+            </div>
+        </div> <!-- End Main Game Area -->
+
+        <!-- Right Side Icons -->
+        <div class="side-icon right-icon">
+            <!-- Icon Group 3: Frog of Fate -->
+            <div class="icon-group">
+                <img src="images/frog_of_fate.png" alt="Frog of Fate" id="frog-of-fate-img"> <!-- REMOVED title="Frog of Fate" -->
+                <span>Frog of Fate</span>
+                <span class="icon-price-tag">100 Pts</span>
+            </div>
+
+            <!-- Icon Group 4: Blood Sacrifice -->
+            <div class="icon-group">
+                <img src="images/blood_sacrifice.png" alt="Blood Sacrifice" id="sacrificial-goblet-img"> <!-- REMOVED title="Blood Sacrifice" -->
+                <span>Blood Sacrifice</span>
+                <!-- No price tag shown in original HTML for this one -->
+            </div>
+        </div>
+
+    </div> <!-- End Game Environment -->
+
+    <!-- Question Modal -->
+    <div id="question-modal" class="modal question-modal">
+        <div class="modal-content question-content">
+            <span class="close-button">×</span>
+
+            <!-- NEW Element for Points -->
+            <div id="question-points-display"></div>
+
+            <!-- Existing Element for Question Text -->
+            <div id="question-text">Question goes here...</div>
+            <div id="answer-text" style="display: none;">Answer goes here...</div>
+            <button id="reveal-answer-btn">Reveal Answer</button>
+            <button id="next-turn-btn" style="display: none;">Next Turn</button>
+        </div>
+    </div>
+
+    <!-- Card Modal -->
+    <div id="card-modal" class="modal card-modal">
+        <div class="modal-content card-content">
+            <span class="close-button card-close-button">×</span>
+            <h2>Card Drawn!</h2>
+            <div id="card-image-container">
+                <img id="card-image" src="" alt="Drawn Card">
+            </div>
+        </div>
+    </div>
+
+    <!-- Seer Peek Modal -->
+    <div id="seer-peek-modal" class="modal seer-peek-modal" style="display: none;">
+        <div class="modal-content seer-peek-content">
+            <!-- No close button needed here? Player must accept/reject -->
+            <h3>Seer's Mad Visions...</h3>
+            <p>The Seer reveals these scrambled words from the chosen chest:</p>
+            <div id="seer-peek-words">Loading words...</div>
+            <div class="seer-peek-buttons">
+                <button id="seer-accept-btn">Accept This Question</button>
+                <button id="seer-reject-btn">Reject</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blood Sacrifice Input Modal -->
+    <div id="goblet-input-modal" class="modal">
+        <div class="modal-content goblet-input-content"> <!-- Add specific class -->
+            <span class="close-button goblet-input-close">×</span>
+            <h2 id="goblet-input-title">Blood Sacrifice</h2>
+            <p id="goblet-input-text">Choose the magnitude of the curse (0-200 points):</p>
+            <!-- *** ADD IMAGE HERE *** -->
+            <img id="goblet-symbol-img" src="images/sacrifical_symbol.png" alt="Sacrificial Symbol">
+            <!-- *** END IMAGE *** -->
+
+            <div class="goblet-slider-container">
+                <input type="range" id="goblet-amount-slider" min="0" max="200" value="100" step="10">
+                <span id="goblet-amount-display">100</span> points
+            </div>
+
+            <button id="goblet-accept-btn">Accept Penalty & Choose Victim</button>
+        </div>
+    </div>
+
+    <!-- Player Selection Modal (for Blood Sacrifice, Loot Goblin, etc.) -->
+    <div id="player-select-modal" class="modal player-select-modal" style="display: none;"> <!-- Initially hidden -->
+        <div class="modal-content player-select-content">
+            <span class="close-button player-select-close">×</span>
+            <!-- The H2 title will be set by JavaScript if needed, or kept static -->
+            <h2>Choose Victim</h2>
+            <!-- DELETE or COMMENT OUT this paragraph: -->
+            <!-- <p>Select another player to lose 100 points:</p> -->
+
+            <div id="player-select-list">
+                <!-- Player buttons will be added here by JavaScript -->
+            </div>
+            <p id="player-select-error" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
+    <!-- Generic Info Modal -->
+    <div id="info-modal" class="modal info-modal" style="display: none;"> <!-- Initially hidden -->
+        <div class="modal-content info-content">
+            <span class="close-button info-modal-close">×</span>
+            <h3 id="info-modal-title">Notification</h3> <!-- Optional Title -->
+            <p id="info-modal-text">Information message goes here.</p>
+            <button id="info-modal-ok-btn">OK</button>
+        </div>
+    </div>
+
+    <div id="inventory-modal" class="modal inventory-modal" style="display: none;">
+        <div class="modal-content inventory-content">
+            <span class="close-button inventory-close-button">×</span>
+            <h3 id="inventory-modal-title">Player Inventory</h3>
+            <div id="inventory-modal-cards" class="inventory-modal-cards-container">
+                <!-- Player card images will be added here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Roulette Modal -->
+    <div id="roulette-modal" class="modal roulette-modal" style="display: none;">
+        <div class="modal-content roulette-content">
+            <span class="close-button roulette-close-button">×</span>
+            <h2 id="roulette-modal-title">Spin the Wheel!</h2>
+            <img id="roulette-wheel-img" src="images/roulette_icon.png" alt="Roulette Wheel"> <!-- Optional Image -->
+            <p id="roulette-modal-text">How much will you wager? (0 - 500 points)</p>
+
+            <div class="roulette-slider-container">
+                <input type="range" id="roulette-amount-slider" min="0" max="500" value="100" step="10">
+                <span id="roulette-amount-display">100</span> points
+            </div>
+            <p id="roulette-error" class="error-message" style="display: none;"></p>
+            <button id="roulette-gamble-btn">Gamble!</button>
+        </div>
+    </div>
+
+    <!-- Treasure Map Modal -->
+    <div id="treasure-map-modal" class="modal treasure-map-modal" style="display: none;">
+        <div class="modal-content treasure-map-content">
+            <span class="close-button treasure-map-close-button">×</span>
+            <h2 id="treasure-map-modal-title">Ancient Treasure Map</h2>
+            <p id="treasure-map-modal-text">Combine the Shovel, Map, and Compass to reveal the treasure!</p>
+
+            <div class="treasure-card-slots">
+                <!-- Shovel Slot -->
+                <div class="treasure-slot" id="treasure-slot-shovel">
+                    <span class="slot-label">Shovel</span>
+                    <!-- CHANGE src here -->
+                    <img src="" alt="Shovel Slot" data-card-type="shovel">
+                </div>
+                <!-- Map Slot -->
+                <div class="treasure-slot" id="treasure-slot-map">
+                        <span class="slot-label">Map</span>
+                        <!-- CHANGE src here -->
+                    <img src="" alt="Map Slot" data-card-type="map">
+                </div>
+                <!-- Compass Slot -->
+                <div class="treasure-slot" id="treasure-slot-compass">
+                        <span class="slot-label">Compass</span>
+                        <!-- CHANGE src here -->
+                    <img src="" alt="Compass Slot" data-card-type="compass">
+                </div>
+            </div>
+
+            <button id="open-treasure-btn" disabled>Open Treasure</button>
+                <p id="treasure-map-status" class="treasure-status-message"></p> <!-- Optional status text -->
+        </div>
+    </div>
+    
+    <!-- Category Selection Modal (for Puppet Master) -->
+    <div id="category-select-modal" class="modal category-select-modal" style="display: none;">
+        <div class="modal-content category-select-content">
+            <span class="close-button category-select-close">×</span>
+            <h2 id="category-select-title">Choose a Category!</h2>
+            <p id="category-select-text">Select the category the victim will be forced into:</p>
+            <div id="category-select-list">
+                <!-- Category buttons will be added here by JavaScript -->
+            </div>
+            <p id="category-select-error" class="error-message" style="display: none;"></p>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal confirm-modal" style="display: none;">
+        <div class="modal-content confirm-content">
+            <!-- No standard 'X' close button for confirmation -->
+            <h3 id="confirm-modal-title">Confirmation</h3>
+            <p id="confirm-modal-text">Are you sure?</p>
+            <div class="confirm-modal-buttons">
+                <button id="confirm-modal-yes-btn">Yes</button>
+                <button id="confirm-modal-no-btn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
